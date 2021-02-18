@@ -41,7 +41,7 @@ public class BurrowsWheeler {
     // apply Burrows-Wheeler transform,
     // reading from standard input and writing to standard output
     public static void transform(){
-        String original = StdIn.readLine();
+        String original = StdIn.readAll();
         CircularSuffixArray circularSuffixArray = new CircularSuffixArray(original);
 
         StringBuilder builder = new StringBuilder();
