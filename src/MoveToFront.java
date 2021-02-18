@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
-import edu.princeton.cs.algs4.StdIn;
-import edu.princeton.cs.algs4.StdOut;
 
 public class MoveToFront {
     private static class LinkedArrayList{
@@ -100,7 +98,11 @@ public class MoveToFront {
 
     // apply move-to-front encoding, reading from standard input and writing to standard output
     public static void encode(){
-        String line = StdIn.readAll();
+        StringBuilder lineBuilder = new StringBuilder();
+        while (!BinaryStdIn.isEmpty()){
+            lineBuilder.append((char)Byte.toUnsignedInt(BinaryStdIn.readByte()));
+        }
+        String line = lineBuilder.toString();
         LinkedArrayList l = new LinkedArrayList();
         for(char c:line.toCharArray()){
             BinaryStdOut.write(l.moveToFront(c), 8);
@@ -111,7 +113,11 @@ public class MoveToFront {
     // apply move-to-front decoding, reading from standard input and writing to standard output
     public static void decode(){
         // string of char(binary representation of ints)
-        String encoded = BinaryStdIn.readString();
+        StringBuilder encodedBuilder = new StringBuilder();
+        while (!BinaryStdIn.isEmpty()){
+            encodedBuilder.append((char) Byte.toUnsignedInt(BinaryStdIn.readByte()));
+        }
+        String encoded = encodedBuilder.toString();
         LinkedArrayList l = new LinkedArrayList();
         for (int i = 0; i< encoded.length(); i++) {
             BinaryStdOut.write(l.moveToFrontInverse(encoded.charAt(i)));

@@ -10,9 +10,18 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        while(!BinaryStdIn.isEmpty()){
-            BinaryStdOut.write(BinaryStdIn.readByte());
+        int length = 100;
+        int pointer = 0;
+        while(!BinaryStdIn.isEmpty() && pointer < 100){
+            byte b = BinaryStdIn.readByte();
+            BinaryStdOut.write(b);
+//            System.out.print(Integer.toBinaryString((b+256)%256));
+//            System.out.print(b);
+            System.out.print(Byte.toUnsignedInt(b));
+            System.out.print(" ");
+            pointer++;
         }
+        System.out.println();
         BinaryStdOut.close();
     }
 }

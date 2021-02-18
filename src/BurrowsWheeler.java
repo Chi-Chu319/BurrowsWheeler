@@ -1,4 +1,3 @@
-import edu.princeton.cs.algs4.BinaryIn;
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
 import edu.princeton.cs.algs4.StdIn;
@@ -41,7 +40,11 @@ public class BurrowsWheeler {
     // apply Burrows-Wheeler transform,
     // reading from standard input and writing to standard output
     public static void transform(){
-        String original = StdIn.readAll();
+        StringBuilder originalBuilder = new StringBuilder();
+        while (!BinaryStdIn.isEmpty()){
+            originalBuilder.append((char) Byte.toUnsignedInt(BinaryStdIn.readByte()));
+        }
+        String original = originalBuilder.toString();
         CircularSuffixArray circularSuffixArray = new CircularSuffixArray(original);
 
         StringBuilder builder = new StringBuilder();
@@ -68,7 +71,11 @@ public class BurrowsWheeler {
     // reading from standard input and writing to standard output
     public static void inverseTransform(){
         int first = BinaryStdIn.readInt(32);
-        String transformed = BinaryStdIn.readString();
+        StringBuilder transformedBuilder = new StringBuilder();
+        while (!BinaryStdIn.isEmpty()){
+            transformedBuilder.append((char) Byte.toUnsignedInt(BinaryStdIn.readByte()));
+        }
+        String transformed = transformedBuilder.toString();
 
         KeyIndexCounting keyIndexCounting = new KeyIndexCounting(transformed.toCharArray());
         // sorted.
