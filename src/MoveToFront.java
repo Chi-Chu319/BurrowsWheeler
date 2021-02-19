@@ -6,7 +6,7 @@ public class MoveToFront {
         // a array implementation of linked list
         // supports constant time random access, constant time move to the front operation
 
-        private final int R = 256;
+        private static final int R = 256;
         private final Node[] references;
         private Node start;
         private Node end;

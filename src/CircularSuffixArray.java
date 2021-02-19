@@ -1,44 +1,68 @@
-import edu.princeton.cs.algs4.Quick;
+import edu.princeton.cs.algs4.StdIn;
+
 
 public class CircularSuffixArray {
 
-    private stringIdx[] suffixes;
-    private int[] indices;
+    private final int[] indices;
+    private int length;
+    private String sDoubled;
 
-    private class stringIdx implements Comparable<stringIdx>{
-        private final String s;
-        private final int idx;
+    // sorting the indices without constructing the substrings
 
-        public stringIdx(String s, int idx){
-            this.s = s;
-            this.idx = idx;
+    private static class MSDCircular{
+        private int[] indices;
+
+        public static void sort(int[] indices, String stringDoubled){
+            sort(indices, stringDoubled, 0, indices.length - 1, 0);
         }
 
-        @Override
-        public int compareTo(stringIdx that) {
-            return s.compareTo(that.s);
+        private static void sort (int[] indices, String stringDoubled, int lo, int hi, int d){
+            // lo and hi are both inclusive
+            if(lo>=hi) return;
+            int lt = lo, gt = hi;
+            int i = lo + 1;
+            char v = CharAt(stringDoubled, lo, d, indices);
+            while (i <= gt){
+                char t = CharAt(stringDoubled, i, d, indices);
+                if      (v > t) exch(indices, lt++, i++);
+                else if (v < t) exch(indices, gt--, i);
+                else            i++;
+            }
+            sort(indices, stringDoubled, lo, lt-1, d);
+            if(d < indices.length) sort(indices, stringDoubled, lt, gt, d+1);
+            sort(indices, stringDoubled, gt+1, hi, d);
         }
 
-        public String toString(){return this.s;}
+        private static char CharAt(String stringDoubled, int i, int charIdx, int[] indices){
+            return stringDoubled.charAt(indices[i] +charIdx);
+        }
+
+        public static void exch(int[] a, int i, int j){
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
     }
+
 
     // circular suffix array of s
     public CircularSuffixArray(String s){
         if (s == null) throw new IllegalArgumentException();
-        int length = s.length();
+        length = s.length();
         indices = new int[length];
-        suffixes = new stringIdx[length];
-        String stringDouble = s + s;
+        length = indices.length;
+
+        sDoubled = s + s;
         for (int i = 0; i < length; i++){
-            suffixes[i] = new stringIdx(stringDouble.substring(i, i+length), i);
+            indices[i] = i;
         }
-        Quick.sort(suffixes);
-        for(int i = 0; i < length; i++){indices[i] = suffixes[i].idx;}
+
+        MSDCircular.sort(indices, sDoubled);
     }
 
     // length of s
     public int length(){
-        return indices.length;
+        return length;
     }
 
     // returns index of ith sorted suffix
@@ -47,11 +71,24 @@ public class CircularSuffixArray {
         return indices[i];
     }
 
+    private String[] constructSuffix(){
+        String[] suffixes = new String[length];
+        for (int i = 0; i< length; i++){
+            suffixes[i] = sDoubled.substring(i, i + length);
+        }
+        return suffixes;
+    }
+
     // unit testing (required)
     public static void main(String[] args){
-//        CircularSuffixArray c = new CircularSuffixArray(StdIn.readLine());
-//        Stream.of(c.suffixes).forEach(i->System.out.println(i.s));
-//        for(int i : c.indices){System.out.println(i);}
+        CircularSuffixArray c = new CircularSuffixArray(StdIn.readLine());
+        String[] suffixes = c.constructSuffix();
+        for(int i : c.indices){
+            System.out.println(suffixes[i]);
+        }
+        for(int i : c.indices){
+            System.out.println(i);
+        }
     }
 
 }
