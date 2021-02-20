@@ -1,15 +1,14 @@
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
-import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.RunLength;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) {
 	// write your code here
+    }
+    public static void readByteTest(){
         int length = 100;
         int pointer = 0;
         while(!BinaryStdIn.isEmpty() && pointer < 100){

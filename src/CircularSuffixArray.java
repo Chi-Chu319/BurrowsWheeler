@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdIn;
 
 
@@ -10,27 +12,52 @@ public class CircularSuffixArray {
     // sorting the indices without constructing the substrings
 
     private static class MSDCircular{
-        private int[] indices;
+        private static int[] indices;
+        private static String stringDoubled;
+        private static Stack<Integer> los;
+        private static Stack<Integer> his;
+        private static Stack<Integer> ds;
 
-        public static void sort(int[] indices, String stringDoubled){
-            sort(indices, stringDoubled, 0, indices.length - 1, 0);
+        public static void sort(int[] indices_, String stringDoubled_){
+            indices = indices_;
+            stringDoubled = stringDoubled_;
+            los = new Stack<>();
+            his = new Stack<>();
+            ds = new Stack<>();
+            los.push(0);
+            his.push(indices.length - 1);
+            ds.push(0);
+            sort();
         }
 
-        private static void sort (int[] indices, String stringDoubled, int lo, int hi, int d){
+        private static void sort (){
             // lo and hi are both inclusive
-            if(lo>=hi) return;
-            int lt = lo, gt = hi;
-            int i = lo + 1;
-            char v = CharAt(stringDoubled, lo, d, indices);
-            while (i <= gt){
-                char t = CharAt(stringDoubled, i, d, indices);
-                if      (v > t) exch(indices, lt++, i++);
-                else if (v < t) exch(indices, gt--, i);
-                else            i++;
+
+            while (!los.isEmpty()){
+                int lo = los.pop();
+                int hi = his.pop();
+                int d = ds.pop();
+                if(lo>=hi) return;
+                int lt = lo, gt = hi;
+                int i = lo + 1;
+                char v = CharAt(stringDoubled, lo, d, indices);
+                while (i <= gt){
+                    char t = CharAt(stringDoubled, i, d, indices);
+                    if      (v > t) exch(indices, lt++, i++);
+                    else if (v < t) exch(indices, gt--, i);
+                    else            i++;
+                }
+                los.push(lo);
+                his.push(lt-1);
+                ds.push(d);
+                los.push(lt);
+                his.push(gt);
+                ds.push(d+1);
+                los.push(gt+1);
+                his.push(hi);
+                ds.push(d);
             }
-            sort(indices, stringDoubled, lo, lt-1, d);
-            if(d < indices.length) sort(indices, stringDoubled, lt, gt, d+1);
-            sort(indices, stringDoubled, gt+1, hi, d);
+
         }
 
         private static char CharAt(String stringDoubled, int i, int charIdx, int[] indices){
